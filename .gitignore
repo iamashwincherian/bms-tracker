@@ -5,4 +5,4 @@ venv
 playwright-report/
 playwright/.cache/
 playwright/.local-browsers/
-
+.DS_Store
