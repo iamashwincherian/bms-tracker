@@ -1,0 +1,8 @@
+__pycache__/
+.env
+.vscode/
+venv
+playwright-report/
+playwright/.cache/
+playwright/.local-browsers/
+
