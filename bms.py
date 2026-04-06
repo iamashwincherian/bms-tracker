@@ -68,7 +68,7 @@ class BMS:
         Scrape movies from BMS
         """
         show_available_theatres = []
-        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00456016/{self.date}')
+        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00493207/{self.date}')
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
         if element:
             try:
@@ -90,7 +90,7 @@ class BMS:
         """
         is_show_available = False
         show_available_theatres = []
-        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00456016/{self.date}')
+        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00493207/{self.date}')
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
         if element:
             try:
