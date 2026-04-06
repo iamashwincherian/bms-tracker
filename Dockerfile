@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy requirements first for better caching
 COPY requirements.txt .
-COPY .env .
+# COPY .env .
 
 # Install curl
 RUN apt-get update && \
