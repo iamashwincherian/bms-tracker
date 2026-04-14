@@ -98,6 +98,7 @@ class BMS:
         if element:
             try:
                 children = await element.query_selector_all(":scope > *")
+                print(f'Theatres: {len(children)}')
                 for child in children:
                     theatre_item = await child.query_selector(":first-child > :first-child > :nth-child(2) > :first-child > :first-child > :first-child > :first-child > span")
                     name = await theatre_item.inner_text()
