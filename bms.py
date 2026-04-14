@@ -101,6 +101,7 @@ class BMS:
                 for child in children:
                     theatre_item = await child.query_selector(":first-child > :first-child > :nth-child(2) > :first-child > :first-child > :first-child > :first-child > span")
                     name = await theatre_item.inner_text()
+                    print(name)
                     if self.theatre.lower() in name.lower():
                         is_show_available = True
                         show_available_theatres.append(name)
