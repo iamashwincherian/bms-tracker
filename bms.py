@@ -111,7 +111,7 @@ class BMS:
             except Exception as e:
                 print(f"Error during navigation: {e}")
         else:
-            print(f"Error: Not Found")
+            print(f"Error: Not Found", element.inner_html())
 
         if not is_show_available:
             return {
