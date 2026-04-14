@@ -39,6 +39,7 @@ async def get_theatre_names(
 async def search_shows(
     city: str,
     movie: str,
+    id=str,
     date: str,
     theatre: Optional[str] = None,
     send_email_to: Optional[str] = None
@@ -50,7 +51,7 @@ async def search_shows(
     - **date**: Date in YYYYMMDD format (e.g., 20250830)
     - **theatre**: Theatre name to filter (e.g., PVR, INOX) - optional
     """
-    bms = BMS(city, movie, date, theatre)
+    bms = BMS(city, movie, date, theatre, movie_id=id)
     await bms.init()
     try:
         res = await bms.get_shows()

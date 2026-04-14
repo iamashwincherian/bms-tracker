@@ -8,12 +8,13 @@ class BMS:
     """
     This class is used to scrape the BMS website
     """
-    def __init__(self, city="", movie="", date="", theatre=""):
+    def __init__(self, city="", movie="", date="", theatre="", movie_id=""):
         self.base_url = URL
         self.city = city
         self.movie = movie
         self.date = date
         self.theatre = theatre
+        self.movie_id=movie_id
         self.browser = Browser()
 
     async def init(self):
@@ -68,7 +69,7 @@ class BMS:
         Scrape movies from BMS
         """
         show_available_theatres = []
-        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00493207/{self.date}')
+        page = await self.browser.open(f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/{self.movie_id}/{self.date}')
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
         if element:
             try:
@@ -90,7 +91,7 @@ class BMS:
         """
         is_show_available = False
         show_available_theatres = []
-        url_to_search = f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/ET00493207/{self.date}'
+        url_to_search = f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/{self.movie_id}/{self.date}'
         page = await self.browser.open(url_to_search)
         print(url_to_search)
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
