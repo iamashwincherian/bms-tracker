@@ -78,7 +78,6 @@ class BMS:
                     theatre_item = await child.query_selector(":first-child > :first-child > :nth-child(2) > :first-child > :first-child > :first-child > :first-child > span")
                     name = await theatre_item.inner_text()
                     show_available_theatres.append(name)
-                    print(name)
 
             except Exception as e:
                 print(f"Error during navigation: {e}")
@@ -94,16 +93,13 @@ class BMS:
         url_to_search = f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/{self.movie_id}/{self.date}'
         page = await self.browser.open(url_to_search)
         print(url_to_search)
-        print(page)
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
         if element:
             try:
                 children = await element.query_selector_all(":scope > *")
-                print(f'Theatres: {len(children)}')
                 for child in children:
                     theatre_item = await child.query_selector(":first-child > :first-child > :nth-child(2) > :first-child > :first-child > :first-child > :first-child > span")
                     name = await theatre_item.inner_text()
-                    print(name)
                     if self.theatre.lower() in name.lower():
                         is_show_available = True
                         show_available_theatres.append(name)
@@ -111,7 +107,7 @@ class BMS:
             except Exception as e:
                 print(f"Error during navigation: {e}")
         else:
-            print(f"Error: Not Found", element.inner_html())
+            print(f"Error: Not Found")
 
         if not is_show_available:
             return {
