@@ -94,6 +94,7 @@ class BMS:
         url_to_search = f'{self.base_url}/movies/{self.city.lower()}/{self.movie.lower()}/buytickets/{self.movie_id}/{self.date}'
         page = await self.browser.open(url_to_search)
         print(url_to_search)
+        print(page)
         element = await page.query_selector(".ReactVirtualized__Grid__innerScrollContainer")
         if element:
             try:
