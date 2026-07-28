@@ -1,0 +1,124 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 1rem;
+
+  --background: #FAF8F4;
+  --foreground: #1C1712;
+  --card: #FFFFFF;
+  --card-foreground: #1C1712;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1712;
+  --primary: #F2B84B;
+  --primary-foreground: #121014;
+  --secondary: #F1ECE1;
+  --secondary-foreground: #1C1712;
+  --muted: #F1ECE1;
+  --muted-foreground: #756E62;
+  --accent: #F1ECE1;
+  --accent-foreground: #1C1712;
+  --destructive: #C4453A;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5DED1;
+  --input: #E5DED1;
+  --ring: #F2B84B;
+
+  /* Brand accent used for text/icon emphasis (outline buttons, tags, links) -
+     shifts per theme for contrast, unlike --primary which stays constant
+     since it's always paired with dark text on a filled gold background. */
+  --brand: #A8641E;
+  --brand-soft: rgba(184, 100, 20, 0.1);
+
+  --shimmer-1: #EFE9DC;
+  --shimmer-2: #F8F4EC;
+}
+
+.dark {
+  --background: #121014;
+  --foreground: #F5F1EA;
+  --card: #1B181D;
+  --card-foreground: #F5F1EA;
+  --popover: #1B181D;
+  --popover-foreground: #F5F1EA;
+  --primary: #F2B84B;
+  --primary-foreground: #121014;
+  --secondary: #221E24;
+  --secondary-foreground: #F5F1EA;
+  --muted: #221E24;
+  --muted-foreground: #9B948C;
+  --accent: #221E24;
+  --accent-foreground: #F5F1EA;
+  --destructive: #E4574C;
+  --destructive-foreground: #FFFFFF;
+  --border: #2E292F;
+  --input: #2E292F;
+  --ring: #F2B84B;
+
+  --brand: #F2B84B;
+  --brand-soft: rgba(242, 184, 75, 0.12);
+
+  --shimmer-1: #221E24;
+  --shimmer-2: #2A252C;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  ::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -300px 0;
+  }
+  100% {
+    background-position: 300px 0;
+  }
+}
+
+.shimmer {
+  background-image: linear-gradient(90deg, var(--shimmer-1) 25%, var(--shimmer-2) 37%, var(--shimmer-1) 63%);
+  background-size: 600px 100%;
+  animation: shimmer 1.2s infinite;
+}

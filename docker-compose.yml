@@ -1,0 +1,31 @@
+services:
+  # Serves both the API (under /api) and the built frontend (everything
+  # else) from one image/origin - see main.py's static mount.
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - tracked-data:/app/data
+    restart: unless-stopped
+
+  # Same image, different command: the 5-minute tracked-show check loop.
+  # Runs as its own container so an API crash/restart/deploy never takes
+  # availability checking down with it.
+  worker:
+    build: .
+    command: ["python", "worker_service.py"]
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - tracked-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      disable: true
+
+volumes:
+  tracked-data:
