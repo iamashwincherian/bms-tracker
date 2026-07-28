@@ -63,6 +63,23 @@ class BMS:
             page = await self.browser.open(url)
             content = await page.content()
             json_match = re.search(r'<pre>(.*?)</pre>', content, re.DOTALL)
+            if not json_match:
+                # BMS didn't return the expected JSON - most often because
+                # Cloudflare blocked/challenged the request based on the
+                # server's IP reputation (common for datacenter/VPS IPs,
+                # independent of how good the browser automation looks).
+                # Log the full response so the real cause is visible in the
+                # logs instead of a bare "NoneType has no attribute group".
+                blocked = "cloudflare" in content.lower() or "attention required" in content.lower()
+                print(f"search_movies: no <pre> JSON in response (blocked_by_cloudflare={blocked}). Full response below:\n{content}")
+                return {
+                    "success": False,
+                    "error": (
+                        "BMS blocked this request (likely Cloudflare flagging the server's IP)"
+                        if blocked else
+                        "BMS returned an unexpected response instead of search results"
+                    ),
+                }
             data = json.loads(json_match.group(1))
             if not data or not data["hits"]:
                 return None
@@ -82,6 +99,22 @@ class BMS:
                 "success": False,
                 "error": f"Error fetching data: {str(e)}"
             }
+
+    @staticmethod
+    async def _log_page_content(page, where):
+        """
+        When a scrape comes back empty because the expected grid never
+        rendered, log the full page content so a blocked/challenged
+        request and a genuine "nothing here" result - which otherwise
+        look identical from the API response alone - can be told apart.
+        """
+        try:
+            content = await page.content()
+        except Exception:
+            return
+        lowered = content.lower()
+        blocked = "cloudflare" in lowered or "attention required" in lowered or "captcha" in lowered
+        print(f"{where}: grid not found (blocked_by_cloudflare={blocked}). Full response below:\n{content}")
 
     @staticmethod
     def _date_from_url(url):
@@ -136,6 +169,8 @@ class BMS:
                         cinemas.append({"name": name, "address": address})
             except Exception as e:
                 print(f"Error during navigation: {e}")
+        else:
+            await self._log_page_content(page, "get_cinemas")
         return cinemas
 
     async def get_theatre_names(self):
@@ -161,6 +196,8 @@ class BMS:
 
             except Exception as e:
                 print(f"Error during navigation: {e}")
+        else:
+            await self._log_page_content(page, "get_theatre_names")
         return show_available_theatres
 
     # Add your scraping methods here
@@ -198,7 +235,7 @@ class BMS:
             except Exception as e:
                 print(f"Error during navigation: {e}")
         else:
-            print(f"Error: Not Found")
+            await self._log_page_content(page, "get_shows")
 
         if not is_show_available:
             return {
